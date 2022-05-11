@@ -30,16 +30,16 @@ const App = () => {
                       </div>
                       <ul className="social">
                         <li>
-                            <a href="#" target="_blank" rel='noreferrer'><img src="assets/icons/twitter.svg" alt="twitter"/></a>
+                            <a href="https://twitter.com/NeonSkies" target="_blank" rel='noreferrer'><img src="assets/icons/twitter.svg" alt="twitter"/></a>
                         </li>
                         <li>
-                            <a href="#" target="_blank" rel='noreferrer'><img src="assets/icons/youtube.svg" alt="youtube"/></a>
+                            <a href="https://www.youtube.com/channel/UCnRkXUrLo65-QSU5wvaBKhA" target="_blank" rel='noreferrer'><img src="assets/icons/youtube.svg" alt="youtube"/></a>
                         </li>
                         <li>
-                            <a href="#" target="_blank" rel='noreferrer'><img src="assets/icons/medium.svg" alt="medium"/></a>
+                            <a href="https://neonskies.medium.com/" target="_blank" rel='noreferrer'><img src="assets/icons/medium.svg" alt="medium"/></a>
                         </li>
                         <li>
-                            <a href="#" target="_blank" rel='noreferrer'><img src="assets/icons/discord.svg" alt="discord"/></a>
+                            <a href="https://discord.com/invite/Xv8ZEff4vW" target="_blank" rel='noreferrer'><img src="assets/icons/discord.svg" alt="discord"/></a>
                         </li>
                       </ul>
 

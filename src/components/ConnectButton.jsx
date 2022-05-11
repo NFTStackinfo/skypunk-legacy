@@ -177,11 +177,12 @@ const ConnectButton = () => {
                     <button
                         className='btn'
                         id={"connectBtn"}
-                        onClick={e => {
-                            e.preventDefault();
-                            dispatch(connect());
-                            openMobileMetamask();
-                        }}
+                        onClick={e => null}
+                        // onClick={e => {
+                        //     e.preventDefault();
+                        //     dispatch(connect());
+                        //     openMobileMetamask();
+                        // }}
                     >
                         Connect Wallet
                     </button>
