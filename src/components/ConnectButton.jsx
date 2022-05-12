@@ -17,6 +17,7 @@ const ConnectButton = () => {
     const [maxMintCount, setMaxMintCount] = useState(1) //comment if you need static maxMintCount
     const [connectingMobile, setConnectingMobile] = useState(false)
     const [disableMint, setDisableMint] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch()
     const blockchain = useSelector((state) => state.blockchain)
@@ -81,6 +82,7 @@ const ConnectButton = () => {
                 : count
 
     const claimNFTs = async (_amount) => {
+        setLoading(true)
         const isMintActive = await blockchain.smartContract.methods.isMintActive().call()
         const isPreSaleMintActive = await blockchain.smartContract.methods.isPreSaleMintActive().call()
         const address = await blockchain.account
@@ -100,10 +102,11 @@ const ConnectButton = () => {
             const roundedBalance = balance / 10 ** 18
             console.log(fixImpreciseNumber(_amount * mintPrice))
             if(roundedBalance < fixImpreciseNumber(_amount * mintPrice)) {
-
+                setLoading(false)
                 return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} MATIC + gas.`)
             }
             if(isPreSaleMintActive) {
+                setLoading(false)
                 if(!isWhitelisted) {
                     return setFallback('Unfortunately, you are not whitelisted.')
                 }
@@ -112,6 +115,7 @@ const ConnectButton = () => {
                 }
             }
             if(roundedBalance)
+                setLoading(false)
                 mint.send({
                     from: blockchain.account,
                     value: blockchain.web3.utils.toWei(fixImpreciseNumber(mintPrice * _amount).toString(), "ether")
@@ -126,6 +130,7 @@ const ConnectButton = () => {
                     // window.location.replace('/success')
                 });
         } else {
+            setLoading(false)
             setFallback('The mint is not open yet.')
         }
     }
@@ -172,6 +177,15 @@ const ConnectButton = () => {
                             }}
                         >
                             Mint
+                            {
+                                loading &&
+                                <div className="lds-ring">
+                                    <div/>
+                                    <div/>
+                                    <div/>
+                                    <div/>
+                                </div>
+                            }
                         </button>
                     </div>
                     {fallback && <p className="warn-text">{fallback}</p>}
