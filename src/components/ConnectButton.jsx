@@ -28,7 +28,7 @@ const ConnectButton = () => {
     console.log(blockchain)
 
     const errorMessages = [
-        'Change network to ETH.',
+        'Change network to Polygon.',
         'Something went wrong.'
     ]
     const metamaskError = 'Install Metamask.'
@@ -41,12 +41,17 @@ const ConnectButton = () => {
             setFallback(blockchain.errorMsg)
         }
         if(blockchain.errorMsg === metamaskError && !(isIOS || isAndroid)) {
-            window.location.replace('https://metamask.app.link/dapp/unusualguestsmint.com/')
+            window.location.replace('https://metamask.app.link/dapp/skypunk-legacy.netlify.app/')
         }
     }, [blockchain.errorMsg])
 
     useEffect(async () => {
         if (blockchain.account !== "" && blockchain.smartContract !== null) {
+            const isMintActive = await blockchain.smartContract.methods.isMintActive().call()
+            const isPreSaleMintActive = await blockchain.smartContract.methods.isPreSaleMintActive().call()
+            const mintPrice = isMintActive ? await blockchain.smartContract.methods?.mintPrice().call() / 10 ** 18
+                : isPreSaleMintActive ? await blockchain.smartContract.methods?.preSaleMintPrice().call() / 10 ** 18 : 0
+            console.log(mintPrice)
             dispatch(fetchData(blockchain.account));
             if (blockchain.account) {
                 setWalletConnected(true)
@@ -96,7 +101,7 @@ const ConnectButton = () => {
             console.log(fixImpreciseNumber(_amount * mintPrice))
             if(roundedBalance < fixImpreciseNumber(_amount * mintPrice)) {
 
-                return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} ETH + gas.`)
+                return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} MATIC + gas.`)
             }
             if(isPreSaleMintActive) {
                 if(!isWhitelisted) {
@@ -130,7 +135,7 @@ const ConnectButton = () => {
             if (connectingMobile && !walletConnected && (isIOS || isAndroid)
                 || blockchain.errorMsg === metamaskError) {
 
-                window.location.replace('https://metamask.app.link/dapp/unusualguestsmint.com/')
+                window.location.replace('https://metamask.app.link/dapp/skypunk-legacy.netlify.app/')
 
             }
         }
@@ -177,12 +182,12 @@ const ConnectButton = () => {
                     <button
                         className='btn'
                         id={"connectBtn"}
-                        onClick={e => null}
-                        // onClick={e => {
-                        //     e.preventDefault();
-                        //     dispatch(connect());
-                        //     openMobileMetamask();
-                        // }}
+                        // onClick={e => null}
+                        onClick={e => {
+                            e.preventDefault();
+                            dispatch(connect());
+                            openMobileMetamask();
+                        }}
                     >
                         Connect Wallet
                     </button>

@@ -1,4 +1,4 @@
-//
+// SPDX-License-Identifier: MIT
 // Made by: NFT Stack
 //          https://nftstack.info
 //
@@ -8,13 +8,13 @@ pragma solidity ^0.8.1;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract NFTStackSmartContract is ERC721Enumerable, Ownable {
-  uint256 public mintPrice = 0.001 ether;
-  uint256 public preSaleMintPrice = 0.001 ether;
+contract SkyPunkLegacy is ERC721Enumerable, Ownable {
+  uint256 public mintPrice = 502 ether;
+  uint256 public preSaleMintPrice = 335 ether;
 
   uint256 private reserveAtATime = 50;
   uint256 private reservedCount = 0;
-  uint256 private maxReserveCount = 200;
+  uint256 private maxReserveCount = 100;
 
   string _baseTokenURI;
 
@@ -22,12 +22,12 @@ contract NFTStackSmartContract is ERC721Enumerable, Ownable {
   bool public isPreSaleMintActive = false;
   bool public isClosedMintForever = false;
 
-  uint256 public maximumMintSupply = 10000;
-  uint256 public maximumAllowedTokensPerPurchase = 10;
-  uint256 public maximumAllowedTokensPerWallet = 10;
-  uint256 public allowListMaxMint = 10;
+  uint256 public maximumMintSupply = 2000;
+  uint256 public maximumAllowedTokensPerPurchase = 2;
+  uint256 public maximumAllowedTokensPerWallet = 2;
+  uint256 public allowListMaxMint = 1;
 
-  address private OtherAddress = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
+  address private OtherAddress = 0xf52c18eB32e89e7cc6eB9Cc586034D3c5b6045dD;
 
   mapping(address => bool) private _allowList;
   mapping(address => uint256) private _allowListClaimed;
@@ -35,7 +35,7 @@ contract NFTStackSmartContract is ERC721Enumerable, Ownable {
   event AssetMinted(uint256 tokenId, address sender);
   event SaleActivation(bool isMintActive);
 
-  constructor(string memory baseURI) ERC721("NFTStack Smart Contract", "NFTSSC") {
+  constructor(string memory baseURI) ERC721("SkyPunk Legacy", "SPL") {
     setBaseURI(baseURI);
   }
 
@@ -167,8 +167,13 @@ contract NFTStackSmartContract is ERC721Enumerable, Ownable {
   }
 
   function reserveToCustomWallet(address _walletAddress, uint256 _count) public onlyAuthorized {
-    for (uint256 i = 0; i < _count; i++) {
-      emit AssetMinted(totalSupply(), _walletAddress);
+    require(reservedCount <= maxReserveCount, "Max Reserves taken already!");
+
+    uint256 supply = totalSupply();
+    uint256 i;
+
+    for (i = 0; i < _count; i++) {
+      emit AssetMinted(supply + i, _walletAddress);
       _safeMint(_walletAddress, totalSupply());
     }
   }
@@ -194,7 +199,7 @@ contract NFTStackSmartContract is ERC721Enumerable, Ownable {
 
     for (uint256 i = 0; i < _count; i++) {
       emit AssetMinted(totalSupply(), _to);
-      _safeMint(_to, totalSupply());
+      _mint(_to, totalSupply());
     }
   }
 
@@ -210,7 +215,7 @@ contract NFTStackSmartContract is ERC721Enumerable, Ownable {
     for (uint256 i = 0; i < _count; i++) {
       _allowListClaimed[msg.sender] += 1;
       emit AssetMinted(totalSupply(), msg.sender);
-      _safeMint(msg.sender, totalSupply());
+      _mint(msg.sender, totalSupply());
     }
   }
 

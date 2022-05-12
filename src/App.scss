@@ -279,6 +279,14 @@ main {
     color: red;
 }
 
+@media (min-width: 992px) and (max-height: 800px) {
+
+    .app {
+        background: #01102F url("assets/bg-md.png") no-repeat right top;
+        background-size: 70%;
+    }
+}
+
 @media (max-width: 1199px) {
     main {
         h1 {

@@ -7,7 +7,7 @@ const App = () => {
       <div className='app'>
           <header className='header'>
               <div className="container">
-                      <a href="#" className="logo"><img src="logo.png" alt="skypunk legacy"/></a>
+                      <a href="https://www.neonskies.io/" target='_blank' rel='noreferrer' className="logo"><img src="logo.png" alt="skypunk legacy"/></a>
               </div>
           </header>
           <main>

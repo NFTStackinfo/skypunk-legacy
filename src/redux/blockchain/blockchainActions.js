@@ -1,6 +1,6 @@
 // constants
 import Web3 from "web3";
-import SmartContract from "../../contracts/NFTStackSmartContract.json";
+import SmartContract from "../../contracts/SkyPunkLegacy.json";
 // log
 import { fetchData } from "../data/dataActions";
 
@@ -47,10 +47,10 @@ export const connect = () => {
         });
         console.log(networkId)
         //const NetworkData = await SmartContract.networks[networkId];
-        if (networkId === '4' || networkId === 4) {
+        if (networkId === '80001' || networkId === 80001) {
           const SmartContractObj = new web3.eth.Contract(
             SmartContract.abi,
-            "0x2931444b3F55c0fe66aB48F6fDE3020EBb7AC07e"
+            "0x0e4539d9abfcdb5ec704c4e81b51b314b762278c"
           );
           dispatch(
             connectSuccess({
@@ -68,7 +68,7 @@ export const connect = () => {
           });
           // Add listeners end
         } else {
-          dispatch(connectFailed("Change network to ETH."));
+          dispatch(connectFailed("Change network to Polygon."));
         }
       } catch (err) {
         dispatch(connectFailed("Something went wrong."));
