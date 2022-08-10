@@ -87,18 +87,22 @@ export const connect = () => {
         )
         // Add listeners start
         provider.on('accountsChanged', (accounts) => {
-          console.group('accountsChanged')
-          console.log(accounts)
-          dispatch(updateAccount(accounts[0]))
-          console.groupEnd()
+          if (accounts[0] !== account) {
+            console.group('accountsChanged')
+            console.log(accounts)
+            dispatch(updateAccount(accounts[0]))
+            console.groupEnd()
+          }
         })
 
         // Subscribe to chainId change
         provider.on('chainChanged', (chainId) => {
-          console.group('chainChanged')
-          window.location.reload()
-          console.log(chainId)
-          console.groupEnd()
+          if (+chainId !== +networkId) {
+            console.group('chainChanged')
+            // window.location.reload()
+            console.log(chainId)
+            console.groupEnd()
+          }
         })
 
         // Subscribe to session disconnection
