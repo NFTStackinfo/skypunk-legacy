@@ -99,7 +99,7 @@ export const connect = () => {
         provider.on('chainChanged', (chainId) => {
           if (+chainId !== +networkId) {
             console.group('chainChanged')
-            // window.location.reload()
+            window.location.reload()
             console.log(chainId)
             console.groupEnd()
           }
