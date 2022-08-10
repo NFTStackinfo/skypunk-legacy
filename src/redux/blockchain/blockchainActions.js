@@ -1,38 +1,38 @@
 // constants
-import Web3 from "web3";
+import Web3 from 'web3'
 import Web3Modal from 'web3modal'
-import SmartContract from "../../contracts/SkyPunkLegacy.json";
+import SmartContract from '../../contracts/SkyPunkLegacy.json'
 // log
-import { fetchData } from "../data/dataActions";
+import { fetchData } from '../data/dataActions'
 
 import providerOptions from './providerOptions'
 
 const connectRequest = () => {
   return {
-    type: "CONNECTION_REQUEST",
-  };
-};
+    type: 'CONNECTION_REQUEST'
+  }
+}
 
 const connectSuccess = (payload) => {
   return {
-    type: "CONNECTION_SUCCESS",
-    payload: payload,
-  };
-};
+    type: 'CONNECTION_SUCCESS',
+    payload: payload
+  }
+}
 
 const connectFailed = (payload) => {
   return {
-    type: "CONNECTION_FAILED",
-    payload: payload,
-  };
-};
+    type: 'CONNECTION_FAILED',
+    payload: payload
+  }
+}
 
 const updateAccountRequest = (payload) => {
   return {
-    type: "UPDATE_ACCOUNT",
-    payload: payload,
-  };
-};
+    type: 'UPDATE_ACCOUNT',
+    payload: payload
+  }
+}
 
 export const connect = () => {
   return async (dispatch) => {
@@ -76,7 +76,7 @@ export const connect = () => {
 
           '0x2931444b3F55c0fe66aB48F6fDE3020EBb7AC07e'
         )
-      // eth contract
+        // eth contract
 
         dispatch(
           connectSuccess({
@@ -104,13 +104,6 @@ export const connect = () => {
             console.groupEnd()
           }
         })
-
-        // Subscribe to session disconnection
-        provider.on('disconnect', (code, reason) => {
-          console.group('disconnect')
-          console.log(code, reason)
-          console.groupEnd()
-        })
         // Add listeners end
       } else {
         dispatch(connectFailed('Change network to ETH.'))
@@ -125,7 +118,7 @@ export const connect = () => {
 
 export const updateAccount = (account) => {
   return async (dispatch) => {
-    dispatch(updateAccountRequest({ account: account }));
-    dispatch(fetchData(account));
-  };
-};
+    dispatch(updateAccountRequest({ account: account }))
+    dispatch(fetchData(account))
+  }
+}
