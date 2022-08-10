@@ -29,7 +29,7 @@ const ConnectButton = () => {
     console.log(blockchain)
 
     const errorMessages = [
-        'Change network to Polygon.',
+        'Change network to Ethereum.',
         'Something went wrong.'
     ]
     const metamaskError = 'Install Metamask.'
@@ -97,13 +97,14 @@ const ConnectButton = () => {
                 : isPreSaleMintActive ? await blockchain.smartContract.methods?.preSaleMintPrice().call() / 10 ** 18 : 0
 
             const balance = await blockchain.web3.eth.getBalance(blockchain.account, async (err, result) => {
+                console.log('balance', result)
                 return  blockchain.web3.utils.fromWei(result, "ether")
             })
             const roundedBalance = balance / 10 ** 18
             console.log(fixImpreciseNumber(_amount * mintPrice))
             if(roundedBalance < fixImpreciseNumber(_amount * mintPrice)) {
                 setLoading(false)
-                return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} MATIC + gas.`)
+                return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} ETH + gas.`)
             }
             if(isPreSaleMintActive) {
                 setLoading(false)
@@ -144,12 +145,13 @@ const ConnectButton = () => {
 
             }
         }
-
-
     }
 
-
-
+    // reset WalletConnect
+    useEffect(() => {
+        localStorage.removeItem('walletconnect')
+        localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE')
+    }, [])
 
     return (
         <>
