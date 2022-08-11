@@ -275,10 +275,19 @@ main {
     }
 }
 
-.warn-text {
-    padding: 24px 0;
-    font-size: 16px;
-    color: red;
+.text {
+    &-warn, &-success {
+        padding: 24px 0;
+        font-size: 16px;
+    }
+
+    &-warn {
+        color: #FF3333;
+    }
+
+    &-success {
+        color: #ffffff;
+    }
 }
 
 .lds-ring {
