@@ -36,9 +36,7 @@ const updateAccountRequest = (payload) => {
 
 export const connect = () => {
   return async (dispatch) => {
-    // console.group()
     dispatch(connectRequest())
-    // console.log('providerOptions', providerOptions)
     const web3Modal = new Web3Modal({
       network: 'rinkeby', // optional
       cacheProvider: false, // optional
@@ -47,18 +45,13 @@ export const connect = () => {
     const provider = await web3Modal.connect()
     const web3 = new Web3(provider)
     try {
-      // await window.ethereum.enable();
       await provider.enable()
-      // console.log('provider : ', provider)
-      // console.log('web3 : ', web3)
       const accounts = await web3.eth.getAccounts((error, accounts) => {
         if (error) throw error
         return accounts
       })
       const account = accounts[0]
-      // console.log('account : ', account)
       const networkId = await web3.eth.net.getId()
-      // console.log('networkId : ', networkId)
       //const NetworkData = await SmartContract.networks[networkId];
 
       if (networkId === '4' || networkId === 4) {
@@ -76,21 +69,13 @@ export const connect = () => {
         )
         // Add listeners start
         provider.on('accountsChanged', (accounts) => {
-          if (accounts[0] !== account) {
-            // console.group('accountsChanged')
-            // console.log(accounts)
-            dispatch(updateAccount(accounts[0]))
-            // console.groupEnd()
-          }
+          dispatch(updateAccount(accounts[0]))
         })
 
         // Subscribe to chainId change
         provider.on('chainChanged', (chainId) => {
           if (+chainId !== +networkId) {
-            // console.group('chainChanged')
             window.location.reload()
-            // console.log(chainId)
-            // console.groupEnd()
           }
         })
         // Add listeners end

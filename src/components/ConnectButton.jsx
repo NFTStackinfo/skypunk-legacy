@@ -34,12 +34,8 @@ const ConnectButton = () => {
 
     useEffect(async () => {
         if (blockchain.account !== "" && blockchain.smartContract !== null) {
-            const isMintActive = await blockchain.smartContract.methods.isMintActive().call()
-            const isPreSaleMintActive = await blockchain.smartContract.methods.isPreSaleMintActive().call()
-            const mintPrice = isMintActive ? await blockchain.smartContract.methods?.mintPrice().call() / 10 ** 18
-                : isPreSaleMintActive ? await blockchain.smartContract.methods?.preSaleMintPrice().call() / 10 ** 18 : 0
-            // console.log(mintPrice)
             dispatch(fetchData(blockchain.account));
+
             if (blockchain.account) {
                 setWalletConnected(true)
                 const maxMint = await blockchain.smartContract.methods.maximumAllowedTokensPerWallet().call()
@@ -79,17 +75,13 @@ const ConnectButton = () => {
                 : null;
 
         if (mint) {
-            // console.log('maxMintCount : ', maxMintCount)
-            // console.log('alreadyMintedCount : ', alreadyMintedCount)
             const mintPrice = isMintActive ? await blockchain.smartContract.methods?.mintPrice().call() / 10 ** 18
                 : isPreSaleMintActive ? await blockchain.smartContract.methods?.preSaleMintPrice().call() / 10 ** 18 : 0
 
             const balance = await blockchain.web3.eth.getBalance(blockchain.account, async (err, result) => {
-                // console.log('balance', result)
                 return  blockchain.web3.utils.fromWei(result, "ether")
             })
             const roundedBalance = balance / 10 ** 18
-            // console.log(fixImpreciseNumber(_amount * mintPrice))
             if(roundedBalance < fixImpreciseNumber(_amount * mintPrice)) {
                 setLoading(false)
                 return setFallback(`You don’t have enough funds to mint! Please, make sure to have ${fixImpreciseNumber(_amount * mintPrice)} ETH + gas.`)
