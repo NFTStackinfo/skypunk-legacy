@@ -3,7 +3,10 @@ const initialState = {
   account: null,
   smartContract: null,
   web3: null,
-  errorMsg: "",
+  error: {
+    code: '',
+    message: '',
+  },
 };
 
 const blockchainReducer = (state = initialState, action) => {
@@ -25,7 +28,7 @@ const blockchainReducer = (state = initialState, action) => {
       return {
         ...initialState,
         loading: false,
-        errorMsg: action.payload,
+        error: action.payload,
       };
     case "UPDATE_ACCOUNT":
       return {

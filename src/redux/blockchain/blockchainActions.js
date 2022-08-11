@@ -106,11 +106,17 @@ export const connect = () => {
         })
         // Add listeners end
       } else {
-        dispatch(connectFailed('Change network to ETH.'))
+        dispatch(connectFailed({
+          code: 'CHANGE_NETWORK',
+          message: 'Change network to ETH.'
+        }))
       }
     } catch (err) {
       console.log('err : ', err)
-      dispatch(connectFailed('Something went wrong.'))
+      dispatch(connectFailed({
+        code: 'SOMETHING_WENT_WRONG',
+        message: 'Something went wrong.'
+      }))
     }
     console.groupEnd()
   }

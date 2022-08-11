@@ -2,9 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "../redux/blockchain/blockchainActions";
 import { fetchData } from "../redux/data/dataActions";
-import { isAndroid, isIOS } from "react-device-detect"
-import styled from "styled-components";
-import { create } from "ipfs-http-client";
 
 const fixImpreciseNumber = (number) => {
     return (parseFloat(number.toPrecision(12)));
@@ -15,7 +12,6 @@ const ConnectButton = () => {
     const [fallback, setFallback] = useState('')
     const [mintCount, setMintCount] = useState(1)
     const [maxMintCount, setMaxMintCount] = useState(1) //comment if you need static maxMintCount
-    const [connectingMobile, setConnectingMobile] = useState(false)
     const [disableMint, setDisableMint] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -28,23 +24,12 @@ const ConnectButton = () => {
     // const maxMintCount = 5
     console.log(blockchain)
 
-    const errorMessages = [
-        'Change network to Ethereum.',
-        'Something went wrong.'
-    ]
-    const metamaskError = 'Install Metamask.'
-
     useEffect(() => {
-        setConnectingMobile(true)
-
         setFallback('')
-        if (blockchain.errorMsg && errorMessages.includes(blockchain.errorMsg)) {
-            setFallback(blockchain.errorMsg)
+        if (blockchain.error.message) {
+            setFallback(blockchain.error.message)
         }
-        if(blockchain.errorMsg === metamaskError && !(isIOS || isAndroid)) {
-            window.location.replace('https://metamask.app.link/dapp/skypunk-legacy.netlify.app/')
-        }
-    }, [blockchain.errorMsg])
+    }, [blockchain.error.code])
 
     useEffect(async () => {
         if (blockchain.account !== "" && blockchain.smartContract !== null) {
@@ -136,17 +121,6 @@ const ConnectButton = () => {
         }
     }
 
-    const openMobileMetamask = () => {
-        if(typeof window.ethereum === 'undefined') {
-            if (connectingMobile && !walletConnected && (isIOS || isAndroid)
-                || blockchain.errorMsg === metamaskError) {
-
-                window.location.replace('https://metamask.app.link/dapp/skypunk-legacy.netlify.app/')
-
-            }
-        }
-    }
-
     // reset WalletConnect
     useEffect(() => {
         localStorage.removeItem('walletconnect')
@@ -202,7 +176,6 @@ const ConnectButton = () => {
                         onClick={e => {
                             e.preventDefault();
                             dispatch(connect());
-                            openMobileMetamask();
                         }}
                     >
                         Connect Wallet
